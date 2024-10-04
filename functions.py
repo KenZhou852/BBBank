@@ -7,14 +7,14 @@ def handleClear(frame):
         widget.destroy()
 
 def handleExit(root,split):
-    split.update_splits()
     root.destroy()
 
-def handleAddSplit(splits, names, amount, popupWindow):
+def handleAddSplit(splits, names, amount, popupWindow, message):
     splits.add_splits(names, amount)
     for name in names:
         name.set("")
     amount.set("")
+    message.set("")
     popupWindow.destroy()
 
 
@@ -30,14 +30,22 @@ def setMax(amount, name, splits):
 
 def payConfirmation(root, splits, name, amount):
     top = Toplevel(root)
-    top.geometry("225x150")
+    top.geometry("235x175")
     top.title("Bank of BB")
     top.grid()
 
-    Label(top, text="Payment Summary", font=("arial",14, "bold")).grid(column=0, row=0, columnspan=2, pady=10, padx=20)
-    Label(top, text=("Pay %s %s?" % (name.get().title(),"{:,}".format(int(amount.get())))), font=("arial", 12)).grid(column=0, row=1, columnspan=2, padx=20, pady=10)
-    Button(top, text="Confirm", command=lambda: handlePaySplit(splits, name, amount, top)).grid(column=0, row=2, padx=10)
-    Button(top, text="Cancel", command=top.destroy).grid(column=1, row=2, padx=10)
+    Label(top, text="Payment Summary", font=("arial",14, "bold")).grid(column=0, row=0, columnspan=3, pady=10, padx=20)
+    
+    if name.get() in splits.get_split():
+        Label(top, text=("%s's Balance" % (name.get().title())), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=3, padx=20, pady=10)
+        Label(top, text="{:,}".format(splits.get_split()[name.get()]), font=("arial", 11)).grid(column=0, row=2, padx=3)
+        Label(top, text= "->", font=("arial", 11)).grid(column=1, row=2, padx=3)
+        Label(top, text="{:,}".format(splits.get_split()[name.get()]-int(amount.get())), font=("arial", 11)).grid(column=2, row=2)
+    else:
+        Label(top, text="Person not found", font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=3, padx=20, pady=10)
+    
+    Button(top, text="Confirm", command=lambda: handlePaySplit(splits, name, amount, top), background="lightgreen").grid(column=0, row=3, padx=10, pady=10)
+    Button(top, text="Cancel", command=top.destroy, background="#f04654").grid(column=2, row=3, padx=10, pady=10)
 
 def addConfirmation(root, splits, names, amount,message):
     top = Toplevel(root)
@@ -62,8 +70,8 @@ def addConfirmation(root, splits, names, amount,message):
     Label(top, text="{:,}".format(int(amount.get())),font=("arial", 11)).grid(column=0, row=6, columnspan=2, padx=30)
     Label(top, text="%d mesos per person" %(int(amount.get())//party_size),font=("arial", 11)).grid(column=0, row=7, columnspan=2, padx=30)
 
-    Button(top, text="Confirm", command=lambda: handleAddSplit(splits, names, amount, top, message)).grid(column=0, row=8, padx=10, pady=10)
-    Button(top, text="Cancel", command=top.destroy).grid(column=1, row=8, padx=10, pady=10)
+    Button(top, text="Confirm", command=lambda: handleAddSplit(splits, names, amount, top, message), background="lightgreen").grid(column=0, row=8, padx=10, pady=10)
+    Button(top, text="Cancel", command=top.destroy, background="#f04654").grid(column=1, row=8, padx=10, pady=10)
 
 def handleShowAll(frame, splits):
     idx = 0

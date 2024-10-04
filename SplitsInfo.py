@@ -22,7 +22,8 @@ class SplitsInfo:
         payees = [name.get().lower() for name in names if name.get() != ""]
         amount_per_person = int(amount.get()) // len(payees)
         namelist = [name.lower() for name in self.splits.keys()]
-        
+        if amount_per_person == 0:
+            return
 
         for payee in payees:
             if payee in namelist:
@@ -30,12 +31,15 @@ class SplitsInfo:
             else:
                 self.splits[payee] = amount_per_person
         self.update_splits()
+        self.sort()
 
     def pay_splits(self, name, amount):
         if name.get().lower() in self.splits.keys():
             self.splits[name.get().lower()] -= int(amount.get())
             if self.splits[name.get().lower()] <= 0:
                 self.splits.pop(name.get().lower())
+        self.update_splits()
+        self.sort()
 
     def update_splits(self):
         with open(os.path.join(Path.home(), self.filepath), mode="w", newline='') as csvfile:
