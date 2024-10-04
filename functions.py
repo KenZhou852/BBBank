@@ -24,6 +24,10 @@ def handlePaySplit(splits, name, amount, popupWindow):
     amount.set("")
     popupWindow.destroy()
 
+def setMax(amount, name, splits):
+    if name.get().lower() in splits.get_split():
+        amount.set(splits.get_split()[name.get()])
+
 def payConfirmation(root, splits, name, amount):
     top = Toplevel(root)
     top.geometry("225x150")
@@ -58,7 +62,7 @@ def addConfirmation(root, splits, names, amount,message):
     Label(top, text="{:,}".format(int(amount.get())),font=("arial", 11)).grid(column=0, row=6, columnspan=2, padx=30)
     Label(top, text="%d mesos per person" %(int(amount.get())//party_size),font=("arial", 11)).grid(column=0, row=7, columnspan=2, padx=30)
 
-    Button(top, text="Confirm", command=lambda: handleAddSplit(splits, names, amount, top)).grid(column=0, row=8, padx=10, pady=10)
+    Button(top, text="Confirm", command=lambda: handleAddSplit(splits, names, amount, top, message)).grid(column=0, row=8, padx=10, pady=10)
     Button(top, text="Cancel", command=top.destroy).grid(column=1, row=8, padx=10, pady=10)
 
 def handleShowAll(frame, splits):
@@ -130,5 +134,6 @@ def pay(root, splits):
 
     ttk.Label(main_frm, text="Amount", font=("arial", 12)).grid(column=0, row=1, padx=10)
     ttk.Entry(main_frm, textvariable=amount).grid(column=1, row=1)
+    ttk.Button(main_frm, text="MAX", command=lambda: setMax(amount, name, splits), style="Function.TButton").grid(column=2, row=1, padx=5)
 
     ttk.Button(root, text="Apply", command=lambda: payConfirmation(root, splits, name, amount), style="Function.TButton").pack()
