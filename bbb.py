@@ -9,7 +9,6 @@ splits = SplitsInfo.SplitsInfo(splits_filepath)
 root = Tk()
 root.title("Bank of BB")
 root.geometry("325x500")
-root.iconbitmap("bb.ico")
 root.configure(background='#e7c7ff')
 
 ttk.Style().configure('TFrame', background="#e7c7ff")

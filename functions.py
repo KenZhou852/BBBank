@@ -57,15 +57,16 @@ def addConfirmation(root, splits, names, amount,message):
     party_size = len(party_list)
     party_list = ", ".join(party_list)
 
-    ttk.Label(top, text="Split Summary", font=("arial",14, "bold"), justify="center").grid(column=0, row=0, columnspan=2, pady=10, padx=20)
+    ttk.Label(top, text="Split Summary", font=("arial",14, "bold")).grid(column=0, row=0, columnspan=2, pady=10, padx=20)
 
     ttk.Label(top, text=("Party"), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=2, padx=10, pady=3)
     ttk.Label(top, text=party_list, font=("arial", 11)).grid(column=0, row=2, columnspan=2, padx=10, pady=1)
 
-    ttk.Label(top, text="Item Split", justify="center", font=("arial",12,"bold")).grid(column=0, row=3, columnspan=2, padx=30, pady=5)
-    ttk.Label(top, text=message.get(), justify="center", font=("arial",11)).grid(column=0, row=4, columnspan=2, padx=30)
+    if message.get() != "":
+        ttk.Label(top, text="Item Split", font=("arial",12,"bold")).grid(column=0, row=3, columnspan=2, padx=30, pady=5)
+        ttk.Label(top, text=message.get(), font=("arial",11)).grid(column=0, row=4, columnspan=2, padx=30)
 
-    ttk.Label(top, text="Amount", justify="center", font=("arial", 12, "bold")).grid(column=0, row=5, columnspan=2, padx=30, pady=5)
+    ttk.Label(top, text="Amount", font=("arial", 12, "bold")).grid(column=0, row=5, columnspan=2, padx=30, pady=5)
     ttk.Label(top, text="{:,} total".format(int(amount.get())),font=("arial", 11)).grid(column=0, row=6, columnspan=2, padx=30)
     ttk.Label(top, text="{:,} mesos per person".format(int(amount.get())//party_size),font=("arial", 11)).grid(column=0, row=7, columnspan=2, padx=30)
 
@@ -113,7 +114,7 @@ def update(root, splits):
 
     ttk.Label(main_frm, text="Names", font=("arial", 12)).grid(column=0, row=0, padx=5)
     ttk.Label(main_frm, text="Amount", font=("arial", 12)).grid(column=0, row=6, pady=20, padx=5)
-    ttk.Label(main_frm, text="Message", font=("arial",12)).grid(column=0, row=7)
+    ttk.Label(main_frm, text="Item Name\n (optional)", font=("arial",12)).grid(column=0, row=7)
 
     for i in range(6):
         name_var = StringVar()
@@ -121,7 +122,7 @@ def update(root, splits):
         ttk.Entry(main_frm, textvariable=name_var).grid(column=1, row=i)
     
     ttk.Entry(main_frm, textvariable=amount_var).grid(column=1, row=6)
-    ttk.Entry(main_frm, textvariable=message).grid(column=1, row=7, ipady=20)
+    ttk.Entry(main_frm, textvariable=message).grid(column=1, row=7)
 
     update_btn = ttk.Button(root, text="Confirm", command=lambda:addConfirmation(root, splits,name_entries, amount_var, message), style="Function.TButton")
     update_btn.pack()
