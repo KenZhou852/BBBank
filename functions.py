@@ -29,46 +29,45 @@ def setMax(amount, name, splits):
         amount.set(splits.get_split()[name.get()])
 
 def payConfirmation(root, splits, name, amount):
-    top = Toplevel(root)
-    top.geometry("235x175")
+    top = Toplevel(root, background="#e7c7ff")
+    top.geometry("250x175")
     top.title("Bank of BB")
     top.grid()
 
-    Label(top, text="Payment Summary", font=("arial",14, "bold")).grid(column=0, row=0, columnspan=3, pady=10, padx=20)
+    ttk.Label(top, text="Payment Summary", font=("arial",14, "bold")).grid(column=0, row=0, columnspan=3, pady=10, padx=20)
     
     if name.get() in splits.get_split():
-        Label(top, text=("%s's Balance" % (name.get().title())), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=3, padx=20, pady=10)
-        Label(top, text="{:,}".format(splits.get_split()[name.get()]), font=("arial", 11)).grid(column=0, row=2, padx=3)
-        Label(top, text= "->", font=("arial", 11)).grid(column=1, row=2, padx=3)
-        Label(top, text="{:,}".format(splits.get_split()[name.get()]-int(amount.get())), font=("arial", 11)).grid(column=2, row=2)
+        ttk.Label(top, text=("%s's Balance" % (name.get().title())), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=3, padx=20, pady=10)
+        ttk.Label(top, text="{:,}".format(splits.get_split()[name.get()]), font=("arial", 11)).grid(column=0, row=2, padx=10)
+        ttk.Label(top, text= "->", font=("arial", 11, "bold")).grid(column=1, row=2)
+        ttk.Label(top, text="{:,}".format(splits.get_split()[name.get()]-int(amount.get())), font=("arial", 11)).grid(column=2, row=2, padx=10)
     else:
-        Label(top, text="Person not found", font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=3, padx=20, pady=10)
+        ttk.Label(top, text="Person not found", font=("arial", 12, "bold"), foreground="#301934").grid(column=0, row=1, columnspan=3, padx=20, pady=10)
     
     Button(top, text="Confirm", command=lambda: handlePaySplit(splits, name, amount, top), background="lightgreen").grid(column=0, row=3, padx=10, pady=10)
     Button(top, text="Cancel", command=top.destroy, background="#f04654").grid(column=2, row=3, padx=10, pady=10)
 
 def addConfirmation(root, splits, names, amount,message):
-    top = Toplevel(root)
-    top.geometry("200x380")
+    top = Toplevel(root, background="#e7c7ff")
+    top.geometry("250x380")
     top.title("Bank of BB")
     top.grid()
-    idx=2
 
     party_list = [name.get() for name in names if name.get() != ""]
     party_size = len(party_list)
     party_list = ", ".join(party_list)
 
-    Label(top, text="Split Summary", font=("arial",14, "bold"), justify="center").grid(column=0, row=0, columnspan=2, pady=10, padx=20)
+    ttk.Label(top, text="Split Summary", font=("arial",14, "bold"), justify="center").grid(column=0, row=0, columnspan=2, pady=10, padx=20)
 
-    Label(top, text=("Party"), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=2, padx=10, pady=3)
-    Label(top, text=party_list, font=("arial", 11)).grid(column=0, row=2, columnspan=2, padx=10, pady=1)
+    ttk.Label(top, text=("Party"), font=("arial", 12, "bold")).grid(column=0, row=1, columnspan=2, padx=10, pady=3)
+    ttk.Label(top, text=party_list, font=("arial", 11)).grid(column=0, row=2, columnspan=2, padx=10, pady=1)
 
-    Label(top, text="Item Split", justify="center", font=("arial",12,"bold")).grid(column=0, row=3, columnspan=2, padx=30, pady=5)
-    Label(top, text=message.get(), justify="center", font=("arial",11)).grid(column=0, row=4, columnspan=2, padx=30)
+    ttk.Label(top, text="Item Split", justify="center", font=("arial",12,"bold")).grid(column=0, row=3, columnspan=2, padx=30, pady=5)
+    ttk.Label(top, text=message.get(), justify="center", font=("arial",11)).grid(column=0, row=4, columnspan=2, padx=30)
 
-    Label(top, text="Amount", justify="center", font=("arial", 12, "bold")).grid(column=0, row=5, columnspan=2, padx=30, pady=5)
-    Label(top, text="{:,}".format(int(amount.get())),font=("arial", 11)).grid(column=0, row=6, columnspan=2, padx=30)
-    Label(top, text="%d mesos per person" %(int(amount.get())//party_size),font=("arial", 11)).grid(column=0, row=7, columnspan=2, padx=30)
+    ttk.Label(top, text="Amount", justify="center", font=("arial", 12, "bold")).grid(column=0, row=5, columnspan=2, padx=30, pady=5)
+    ttk.Label(top, text="{:,} total".format(int(amount.get())),font=("arial", 11)).grid(column=0, row=6, columnspan=2, padx=30)
+    ttk.Label(top, text="{:,} mesos per person".format(int(amount.get())//party_size),font=("arial", 11)).grid(column=0, row=7, columnspan=2, padx=30)
 
     Button(top, text="Confirm", command=lambda: handleAddSplit(splits, names, amount, top, message), background="lightgreen").grid(column=0, row=8, padx=10, pady=10)
     Button(top, text="Cancel", command=top.destroy, background="#f04654").grid(column=1, row=8, padx=10, pady=10)
